@@ -1,0 +1,218 @@
+/* ===== Drop Zone ===== */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 32px;
+  border: 2px dashed rgba(124, 92, 252, 0.35);
+  border-radius: 16px;
+  background: rgba(124, 92, 252, 0.04);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.drop-zone:hover,
+.drop-zone--active {
+  border-color: #7c5cfc;
+  background: rgba(124, 92, 252, 0.1);
+  box-shadow: 0 0 30px rgba(124, 92, 252, 0.12);
+}
+
+.drop-zone__icon {
+  color: #7c5cfc;
+  margin-bottom: 4px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.drop-zone__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #e0ddf5;
+  margin: 0;
+}
+
+.drop-zone__subtitle {
+  font-size: 0.85rem;
+  color: #717191;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+}
+
+.drop-zone__hint {
+  font-size: 0.78rem;
+  color: #57576e;
+  margin: 4px 0 0;
+}
+
+.drop-zone__input {
+  display: none;
+}
+
+/* ===== File List ===== */
+.file-list {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 20px;
+}
+
+.file-list__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #c9c5e8;
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-list__count {
+  background: rgba(124, 92, 252, 0.2);
+  color: #b49aff;
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.file-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
+.file-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.file-item__icon {
+  color: #7c5cfc;
+  flex-shrink: 0;
+}
+
+.file-item__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.file-item__name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #d8d5f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-item__size {
+  font-size: 0.76rem;
+  color: #717191;
+}
+
+.file-item__remove {
+  background: none;
+  border: none;
+  color: #717191;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.file-item__remove:hover {
+  color: #ff5c5c;
+  background: rgba(255, 92, 92, 0.1);
+}
+
+/* ===== Progress ===== */
+.upload-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===== Messages ===== */
+.upload-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.upload-message--success {
+  background: rgba(72, 199, 142, 0.1);
+  color: #48c78e;
+  border: 1px solid rgba(72, 199, 142, 0.2);
+}
+
+.upload-message--error {
+  background: rgba(255, 92, 92, 0.1);
+  color: #ff5c5c;
+  border: 1px solid rgba(255, 92, 92, 0.2);
+}
+
+.upload-message--warning {
+  background: rgba(255, 183, 77, 0.1);
+  color: #ffb74d;
+  border: 1px solid rgba(255, 183, 77, 0.2);
+}
+
+.upload-message__icon {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* ===== Upload Button ===== */
+.btn--upload {
+  width: 100%;
+  padding: 16px;
+  font-size: 1rem;
+}

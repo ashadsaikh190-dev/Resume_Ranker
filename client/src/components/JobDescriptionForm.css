@@ -1,0 +1,124 @@
+/* ===== Job Form ===== */
+.job-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #c9c5e8;
+  letter-spacing: 0.3px;
+}
+
+.form-input,
+.form-textarea {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  color: #e0ddf5;
+  font-family: inherit;
+  transition: all 0.25s ease;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #57576e;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #7c5cfc;
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.form-input--error {
+  border-color: #ff5c5c;
+}
+
+.form-input--error:focus {
+  box-shadow: 0 0 0 3px rgba(255, 92, 92, 0.15);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 180px;
+  line-height: 1.6;
+}
+
+.form-error {
+  font-size: 0.8rem;
+  color: #ff5c5c;
+  margin: 0;
+  animation: slideIn 0.3s ease;
+}
+
+.form-charcount {
+  font-size: 0.75rem;
+  color: #57576e;
+  align-self: flex-end;
+}
+
+.form-loading {
+  padding: 8px 0;
+}
+
+/* ===== Messages ===== */
+.form-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+.form-message--success {
+  background: rgba(72, 199, 142, 0.1);
+  color: #48c78e;
+  border: 1px solid rgba(72, 199, 142, 0.2);
+}
+
+.form-message--error {
+  background: rgba(255, 92, 92, 0.1);
+  color: #ff5c5c;
+  border: 1px solid rgba(255, 92, 92, 0.2);
+}
+
+.form-message__icon {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* ===== Actions ===== */
+.form-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.form-actions .btn--primary {
+  flex: 1;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

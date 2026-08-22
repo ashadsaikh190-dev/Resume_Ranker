@@ -1,0 +1,330 @@
+/* ===== Stats Grid ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(124, 92, 252, 0.2);
+  transform: translateY(-2px);
+}
+
+.stat-card__value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #7c5cfc, #b44aff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-card__label {
+  font-size: 0.82rem;
+  color: #a0a0b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Match Panel ===== */
+.match-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 28px;
+}
+
+.match-panel__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #e0ddf5;
+  margin: 0 0 20px;
+}
+
+.match-panel__controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.match-panel__controls .form-group {
+  flex: 1;
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237c5cfc' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+/* ===== Error / Loading ===== */
+.dash-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: rgba(255, 92, 92, 0.1);
+  color: #ff5c5c;
+  border: 1px solid rgba(255, 92, 92, 0.2);
+  margin-bottom: 20px;
+  animation: slideIn 0.3s ease;
+}
+
+.dash-loading {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* ===== Results ===== */
+.results-section {
+  animation: fadeIn 0.4s ease;
+}
+
+.results-header {
+  margin-bottom: 20px;
+}
+
+.results-header__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #e0ddf5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 6px;
+}
+
+.results-header__count {
+  background: rgba(124, 92, 252, 0.15);
+  color: #b49aff;
+  font-size: 0.75rem;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.results-header__job {
+  font-size: 0.88rem;
+  color: #a0a0b8;
+  margin: 0;
+}
+
+.results-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: #717191;
+  font-size: 0.95rem;
+}
+
+/* ===== Results Table ===== */
+.results-table-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.results-table thead {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.results-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #a0a0b8;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.results-table td {
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  vertical-align: middle;
+}
+
+.results-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.results-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.results-row--top {
+  background: rgba(124, 92, 252, 0.04);
+}
+
+/* Rank */
+.results-rank {
+  text-align: center;
+  width: 60px;
+}
+
+.rank-badge {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #c9b8ff;
+}
+
+/* Candidate */
+.results-candidate {
+  font-weight: 600;
+  color: #e0ddf5;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* File tag */
+.file-tag {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  color: #a0a0b8;
+  display: inline-block;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Percentage bar */
+.results-pct {
+  min-width: 160px;
+}
+
+.pct-bar-container {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.pct-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+.pct-bar-fill.score--high {
+  background: linear-gradient(90deg, #48c78e, #36d399);
+}
+
+.pct-bar-fill.score--medium {
+  background: linear-gradient(90deg, #ffb74d, #ffa726);
+}
+
+.pct-bar-fill.score--low {
+  background: linear-gradient(90deg, #ff5c5c, #ef4444);
+}
+
+.pct-value {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.pct-value.score--high { color: #48c78e; }
+.pct-value.score--medium { color: #ffb74d; }
+.pct-value.score--low { color: #ff5c5c; }
+
+/* Keywords */
+.results-keywords {
+  color: #a0a0b8;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+/* Score Ring */
+.results-score-cell {
+  text-align: center;
+  width: 70px;
+}
+
+.score-ring {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin: 0 auto;
+}
+
+.score-ring.score--high {
+  background: rgba(72, 199, 142, 0.12);
+  color: #48c78e;
+  border: 2px solid rgba(72, 199, 142, 0.3);
+}
+
+.score-ring.score--medium {
+  background: rgba(255, 183, 77, 0.12);
+  color: #ffb74d;
+  border: 2px solid rgba(255, 183, 77, 0.3);
+}
+
+.score-ring.score--low {
+  background: rgba(255, 92, 92, 0.12);
+  color: #ff5c5c;
+  border: 2px solid rgba(255, 92, 92, 0.3);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .match-panel__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .results-table {
+    font-size: 0.8rem;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
