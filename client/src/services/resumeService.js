@@ -1,15 +1,17 @@
 import api from './api';
 
 /**
- * Upload a single resume PDF file and get parsed text back.
+ * Upload multiple resume PDF files and get parsed text back.
  *
- * @param {File} file - The PDF File object to upload.
+ * @param {File[]} files - Array of PDF File objects to upload.
  * @param {function} onProgress - Callback receiving progress percentage (0–100).
  * @returns {Promise} Axios response with parsed resume data.
  */
-export const uploadResume = (file, onProgress) => {
+export const uploadResumes = (files, onProgress) => {
   const formData = new FormData();
-  formData.append('resume', file);
+  files.forEach((file) => {
+    formData.append('resume', file);
+  });
 
   return api.post('/resumes/upload', formData, {
     headers: {

@@ -4,14 +4,14 @@ import ResumeViewer from './components/ResumeViewer';
 import './index.css';
 
 function App() {
-  const [parsedResume, setParsedResume] = useState(null);
+  const [parsedResumes, setParsedResumes] = useState(null);
 
   const handleParsed = (data) => {
-    setParsedResume(data);
+    setParsedResumes(data);
   };
 
   const handleReset = () => {
-    setParsedResume(null);
+    setParsedResumes(null);
   };
 
   return (
@@ -38,12 +38,12 @@ function App() {
 
         {/* Main Content */}
         <main className="main-content" id="main-content">
-          {!parsedResume ? (
+          {!parsedResumes ? (
             <div className="page">
               <div className="page__header">
-                <h2 className="page__title">Upload Resume</h2>
+                <h2 className="page__title">Upload Resumes</h2>
                 <p className="page__subtitle">
-                  Upload a PDF resume to extract and display its content
+                  Upload one or more PDF resumes to extract and display their content
                 </p>
               </div>
               <ResumeUpload onParsed={handleParsed} />
@@ -51,12 +51,12 @@ function App() {
           ) : (
             <div className="page">
               <div className="page__header">
-                <h2 className="page__title">Parsed Resume</h2>
+                <h2 className="page__title">Parsed Resumes</h2>
                 <p className="page__subtitle">
-                  Extracted content from your uploaded resume
+                  Extracted content from {parsedResumes.filter(r => r.success).length} uploaded resume{parsedResumes.filter(r => r.success).length !== 1 ? 's' : ''}
                 </p>
               </div>
-              <ResumeViewer data={parsedResume} onReset={handleReset} />
+              <ResumeViewer resumes={parsedResumes} onReset={handleReset} />
             </div>
           )}
         </main>

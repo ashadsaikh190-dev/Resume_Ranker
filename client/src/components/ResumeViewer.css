@@ -20,16 +20,114 @@
   }
 }
 
+/* ===== Top Bar ===== */
+.viewer__top-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+/* ===== Failed Files Warning ===== */
+.viewer__failed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: rgba(255, 183, 77, 0.08);
+  border: 1px solid rgba(255, 183, 77, 0.2);
+  color: var(--warning);
+  animation: fadeIn 0.3s ease;
+}
+
+.viewer__failed-icon {
+  font-size: 1.1rem;
+}
+
+/* ===== Resume Tabs ===== */
+.viewer__tabs {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.viewer__tabs::-webkit-scrollbar {
+  height: 3px;
+}
+
+.viewer__tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.viewer__tabs::-webkit-scrollbar-thumb {
+  background: rgba(124, 92, 252, 0.2);
+  border-radius: 999px;
+}
+
+.viewer__tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.viewer__tab:hover {
+  background: rgba(124, 92, 252, 0.06);
+  color: var(--text-secondary);
+}
+
+.viewer__tab--active {
+  background: rgba(124, 92, 252, 0.12);
+  color: var(--accent);
+  font-weight: 600;
+  border: 1px solid rgba(124, 92, 252, 0.2);
+}
+
+.viewer__tab-name {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ===== Header Card ===== */
 .viewer__header {
   background: var(--bg-glass);
   border: 1px solid var(--border);
   border-bottom: none;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   padding: 24px 28px;
   backdrop-filter: blur(16px);
   position: relative;
   overflow: hidden;
+}
+
+/* When tabs are shown, the header no longer needs top rounded corners */
+.viewer__tabs + .viewer__header {
+  border-radius: 0;
+}
+
+/* When no tabs, header gets the top rounded corners */
+.viewer:not(:has(.viewer__tabs)) .viewer__header {
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
 .viewer__header::before {
@@ -41,6 +139,11 @@
   height: 3px;
   background: linear-gradient(90deg, #7c5cfc, #b44aff, #48c78e);
   opacity: 0.8;
+}
+
+/* Hide the gradient bar when tabs are above */
+.viewer__tabs + .viewer__header::before {
+  display: none;
 }
 
 .viewer__header-top {
@@ -90,6 +193,15 @@
   font-size: 0.8rem;
   color: var(--text-secondary);
   font-weight: 500;
+}
+
+.viewer__meta-item--badge {
+  background: rgba(124, 92, 252, 0.1);
+  padding: 2px 10px;
+  border-radius: 999px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.75rem;
 }
 
 .viewer__meta-divider {
@@ -196,5 +308,18 @@
   .viewer__text {
     padding: 20px;
     max-height: 400px;
+  }
+
+  .viewer__tabs {
+    padding: 4px;
+  }
+
+  .viewer__tab {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
+
+  .viewer__tab-name {
+    max-width: 100px;
   }
 }

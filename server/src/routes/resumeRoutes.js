@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require('../middleware/uploadMiddleware');
 const { uploadResume } = require('../controllers/resumeController');
 
-// POST /api/resumes/upload — upload a single PDF resume and get parsed text
-router.post('/upload', upload.single('resume'), uploadResume);
+// POST /api/resumes/upload — upload multiple PDF resumes and get parsed text
+router.post('/upload', upload.array('resume', 10), uploadResume);
 
 module.exports = router;
