@@ -1,5 +1,5 @@
 /* ================================================================
-   RESUME SCREENER — Design System
+   RESUME PARSER — Design System
    Dark theme · Glassmorphism · Gradient accents
    ================================================================ */
 
@@ -42,8 +42,6 @@
 
   --shadow-glow: 0 0 40px rgba(124, 92, 252, 0.08);
   --transition: 0.25s ease;
-
-  --sidebar-width: 260px;
 }
 
 html {
@@ -94,132 +92,73 @@ body::before {
 
 /* ===== App Layout ===== */
 .app {
-  display: flex;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
-/* ===== Sidebar ===== */
-.sidebar {
-  width: var(--sidebar-width);
-  background: var(--bg-secondary);
-  border-right: 1px solid var(--border);
+.app-container {
+  width: 100%;
+  max-width: 760px;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 100;
-  backdrop-filter: blur(20px);
+  min-height: 100vh;
+  padding: 0 24px;
 }
 
-.sidebar__brand {
+/* ===== App Header ===== */
+.app-header {
+  padding: 32px 0 24px;
+}
+
+.app-header__brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 24px 20px;
-  border-bottom: 1px solid var(--border);
+  gap: 14px;
 }
 
-.sidebar__logo {
-  width: 42px;
-  height: 42px;
+.app-header__logo {
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #7c5cfc, #b44aff);
-  border-radius: 12px;
+  border-radius: 14px;
   color: white;
   flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(124, 92, 252, 0.3);
 }
 
-.sidebar__brand-text {
+.app-header__text {
   display: flex;
   flex-direction: column;
 }
 
-.sidebar__title {
-  font-size: 1.05rem;
-  font-weight: 700;
+.app-header__title {
+  font-size: 1.3rem;
+  font-weight: 800;
   color: var(--text-primary);
   line-height: 1.2;
+  letter-spacing: -0.3px;
 }
 
-.sidebar__version {
-  font-size: 0.7rem;
+.app-header__tagline {
+  font-size: 0.75rem;
   color: var(--text-muted);
   font-weight: 500;
-}
-
-.sidebar__nav {
-  flex: 1;
-  padding: 16px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.sidebar__link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all var(--transition);
-  position: relative;
-  overflow: hidden;
-}
-
-.sidebar__link:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-primary);
-}
-
-.sidebar__link--active {
-  background: rgba(124, 92, 252, 0.12);
-  color: #c9b8ff;
-}
-
-.sidebar__link--active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 20px;
-  background: var(--accent);
-  border-radius: 0 4px 4px 0;
-}
-
-.sidebar__footer {
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-}
-
-.sidebar__footer-text {
-  font-size: 0.72rem;
-  color: var(--text-muted);
   letter-spacing: 0.5px;
-  font-weight: 500;
+  margin-top: 2px;
 }
 
 /* ===== Main Content ===== */
 .main-content {
   flex: 1;
-  margin-left: var(--sidebar-width);
-  padding: 48px 40px;
-  min-height: 100vh;
+  padding: 16px 0 48px;
 }
 
 /* ===== Pages ===== */
 .page {
-  max-width: 800px;
-  margin: 0 auto;
   animation: fadeIn 0.4s ease;
 }
 
@@ -229,7 +168,7 @@ body::before {
 }
 
 .page__header {
-  margin-bottom: 36px;
+  margin-bottom: 32px;
 }
 
 .page__title {
@@ -311,6 +250,20 @@ body::before {
   color: var(--text-primary);
 }
 
+/* ===== Footer ===== */
+.app-footer {
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.app-footer__text {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
 /* ===== Scrollbar ===== */
 ::-webkit-scrollbar {
   width: 6px;
@@ -331,52 +284,31 @@ body::before {
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  :root {
-    --sidebar-width: 0px;
+  .app-container {
+    padding: 0 16px;
   }
 
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    flex-direction: row;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    overflow-x: auto;
+  .app-header {
+    padding: 20px 0 16px;
   }
 
-  .sidebar__brand {
-    border-bottom: none;
-    padding: 12px 16px;
+  .app-header__logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
   }
 
-  .sidebar__nav {
-    flex-direction: row;
-    padding: 8px 12px;
-    gap: 4px;
+  .app-header__logo svg {
+    width: 22px;
+    height: 22px;
   }
 
-  .sidebar__link {
-    white-space: nowrap;
-    padding: 10px 14px;
-    font-size: 0.85rem;
-  }
-
-  .sidebar__link--active::before {
-    display: none;
-  }
-
-  .sidebar__footer {
-    display: none;
-  }
-
-  .app {
-    flex-direction: column;
+  .app-header__title {
+    font-size: 1.1rem;
   }
 
   .main-content {
-    margin-left: 0;
-    padding: 24px 16px;
+    padding: 12px 0 32px;
   }
 
   .page__title {

@@ -1,7 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { uploadResumes } from '../services/resumeService';
-import ProgressBar from './ProgressBar';
-import LoadingSpinner from './LoadingSpinner';
+import { uploadResume } from '../services/resumeService';
 import './ResumeUpload.css';
 
 const formatFileSize = (bytes) => {
@@ -10,12 +8,12 @@ const formatFileSize = (bytes) => {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 };
 
-const ResumeUpload = () => {
-  const [files, setFiles] = useState([]);
+const ResumeUpload = ({ onParsed }) => {
+  const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(''); // 'success' | 'error' | 'warning'
+  const [messageType, setMessageType] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -24,48 +22,33 @@ const ResumeUpload = () => {
     setMessageType('');
   };
 
-  const validateFiles = (incoming) => {
-    const valid = [];
-    const rejected = [];
-
-    Array.from(incoming).forEach((file) => {
-      const ext = file.name.split('.').pop().toLowerCase();
-      if (file.type === 'application/pdf' && ext === 'pdf') {
-        // Avoid duplicates
-        if (!files.some((f) => f.name === file.name && f.size === file.size)) {
-          valid.push(file);
-        }
-      } else {
-        rejected.push(file.name);
-      }
-    });
-
-    if (rejected.length > 0) {
-      setMessage(
-        `Only PDF files are allowed. Rejected: ${rejected.join(', ')}`
-      );
-      setMessageType('warning');
+  const validateFile = (incoming) => {
+    const ext = incoming.name.split('.').pop().toLowerCase();
+    if (incoming.type === 'application/pdf' && ext === 'pdf') {
+      return true;
     }
-
-    return valid;
+    setMessage('Only PDF files are allowed.');
+    setMessageType('warning');
+    return false;
   };
 
-  const handleFilesSelected = (incoming) => {
+  const handleFileSelected = (incoming) => {
     clearMessage();
-    const valid = validateFiles(incoming);
-    if (valid.length > 0) {
-      setFiles((prev) => [...prev, ...valid]);
+    const selected = incoming[0];
+    if (selected && validateFile(selected)) {
+      setFile(selected);
     }
   };
 
   const handleInputChange = (e) => {
-    handleFilesSelected(e.target.files);
-    // Reset input so the same file can be selected again
+    if (e.target.files.length > 0) {
+      handleFileSelected(e.target.files);
+    }
     e.target.value = '';
   };
 
-  const handleRemoveFile = (index) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+  const handleRemoveFile = () => {
+    setFile(null);
     clearMessage();
   };
 
@@ -93,15 +76,15 @@ const ResumeUpload = () => {
       e.stopPropagation();
       setDragActive(false);
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        handleFilesSelected(e.dataTransfer.files);
+        handleFileSelected(e.dataTransfer.files);
       }
     },
-    [files]
+    []
   );
 
   const handleUpload = async () => {
-    if (files.length === 0) {
-      setMessage('Please select at least one PDF resume.');
+    if (!file) {
+      setMessage('Please select a PDF resume.');
       setMessageType('error');
       return;
     }
@@ -111,14 +94,20 @@ const ResumeUpload = () => {
     clearMessage();
 
     try {
-      const response = await uploadResumes(files, (percent) => {
+      const response = await uploadResume(file, (percent) => {
         setProgress(percent);
       });
 
-      setMessage(response.data.message || 'Resumes uploaded successfully!');
+      setMessage('Resume parsed successfully!');
       setMessageType('success');
-      setFiles([]);
       setProgress(100);
+
+      // Pass parsed data to parent
+      if (onParsed && response.data.resume) {
+        onParsed(response.data.resume);
+      }
+
+      setFile(null);
     } catch (error) {
       const errMsg =
         error.response?.data?.message ||
@@ -136,95 +125,94 @@ const ResumeUpload = () => {
     <div className="upload-container">
       {/* Drop Zone */}
       <div
-        className={`drop-zone ${dragActive ? 'drop-zone--active' : ''}`}
+        className={`drop-zone ${dragActive ? 'drop-zone--active' : ''} ${file ? 'drop-zone--has-file' : ''}`}
         onDragEnter={handleDragIn}
         onDragLeave={handleDragOut}
         onDragOver={handleDrag}
         onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
+        onClick={() => !file && fileInputRef.current?.click()}
         id="drop-zone"
       >
-        <div className="drop-zone__icon">
-          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" y1="3" x2="12" y2="15" />
-          </svg>
-        </div>
-        <p className="drop-zone__title">
-          Drag &amp; Drop PDF files here
-        </p>
-        <p className="drop-zone__subtitle">OR</p>
-        <button
-          type="button"
-          className="btn btn--secondary"
-          onClick={(e) => {
-            e.stopPropagation();
-            fileInputRef.current?.click();
-          }}
-          id="choose-files-btn"
-        >
-          Choose Files
-        </button>
-        <p className="drop-zone__hint">Only .pdf files are accepted</p>
+        {!file ? (
+          <>
+            <div className="drop-zone__icon">
+              <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+            </div>
+            <p className="drop-zone__title">
+              Drag &amp; Drop a PDF file here
+            </p>
+            <p className="drop-zone__subtitle">OR</p>
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={(e) => {
+                e.stopPropagation();
+                fileInputRef.current?.click();
+              }}
+              id="choose-file-btn"
+            >
+              Choose File
+            </button>
+            <p className="drop-zone__hint">Only .pdf files are accepted · Max 10 MB</p>
+          </>
+        ) : (
+          <div className="selected-file">
+            <div className="selected-file__icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+            </div>
+            <div className="selected-file__info">
+              <span className="selected-file__name">{file.name}</span>
+              <span className="selected-file__size">{formatFileSize(file.size)}</span>
+            </div>
+            <button
+              type="button"
+              className="selected-file__remove"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemoveFile();
+              }}
+              title="Remove file"
+              id="remove-file-btn"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        )}
         <input
           type="file"
           ref={fileInputRef}
           className="drop-zone__input"
           accept=".pdf,application/pdf"
-          multiple
           onChange={handleInputChange}
           id="file-input"
         />
       </div>
 
-      {/* Selected Files List */}
-      {files.length > 0 && (
-        <div className="file-list" id="file-list">
-          <h3 className="file-list__title">
-            Selected Files
-            <span className="file-list__count">{files.length}</span>
-          </h3>
-          <ul className="file-list__items">
-            {files.map((file, index) => (
-              <li key={`${file.name}-${index}`} className="file-item">
-                <div className="file-item__icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                    <line x1="16" y1="13" x2="8" y2="13" />
-                    <line x1="16" y1="17" x2="8" y2="17" />
-                  </svg>
-                </div>
-                <div className="file-item__info">
-                  <span className="file-item__name">{file.name}</span>
-                  <span className="file-item__size">
-                    {formatFileSize(file.size)}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  className="file-item__remove"
-                  onClick={() => handleRemoveFile(index)}
-                  title="Remove file"
-                  id={`remove-file-${index}`}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
       {/* Progress */}
       {uploading && (
         <div className="upload-progress" id="upload-progress">
-          <ProgressBar percent={progress} />
-          <LoadingSpinner size={28} text="Uploading and processing resumes…" />
+          <div className="progress-bar">
+            <div
+              className="progress-bar__fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="upload-progress__text">
+            <div className="spinner" />
+            <span>Uploading and parsing resume…</span>
+          </div>
         </div>
       )}
 
@@ -241,7 +229,7 @@ const ResumeUpload = () => {
       )}
 
       {/* Upload Button */}
-      {files.length > 0 && !uploading && (
+      {file && !uploading && (
         <button
           type="button"
           className="btn btn--primary btn--upload"
@@ -249,7 +237,12 @@ const ResumeUpload = () => {
           disabled={uploading}
           id="upload-btn"
         >
-          Upload {files.length} Resume{files.length > 1 ? 's' : ''}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Parse Resume
         </button>
       )}
     </div>

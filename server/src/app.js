@@ -5,8 +5,6 @@ const path = require('path');
 const fs = require('fs');
 
 const resumeRoutes = require('./routes/resumeRoutes');
-const jobRoutes = require('./routes/jobRoutes');
-const matchRoutes = require('./routes/matchRoutes');
 const errorMiddleware = require('./middleware/errorMiddleware');
 
 const app = express();
@@ -34,8 +32,6 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/api/resumes', resumeRoutes);
-app.use('/api/jobs', jobRoutes);
-app.use('/api/match', matchRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {

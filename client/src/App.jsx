@@ -1,17 +1,26 @@
-import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
-import UploadResumes from './pages/UploadResumes';
-import JobDescription from './pages/JobDescription';
-import Dashboard from './pages/Dashboard';
+import { useState } from 'react';
+import ResumeUpload from './components/ResumeUpload';
+import ResumeViewer from './components/ResumeViewer';
 import './index.css';
 
 function App() {
+  const [parsedResume, setParsedResume] = useState(null);
+
+  const handleParsed = (data) => {
+    setParsedResume(data);
+  };
+
+  const handleReset = () => {
+    setParsedResume(null);
+  };
+
   return (
-    <Router>
-      <div className="app">
-        {/* Sidebar Navigation */}
-        <aside className="sidebar" id="sidebar">
-          <div className="sidebar__brand">
-            <div className="sidebar__logo">
+    <div className="app">
+      <div className="app-container">
+        {/* Header */}
+        <header className="app-header" id="app-header">
+          <div className="app-header__brand">
+            <div className="app-header__logo">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14 2 14 8 20 8" />
@@ -20,73 +29,44 @@ function App() {
                 <polyline points="10 9 9 9 8 9" />
               </svg>
             </div>
-            <div className="sidebar__brand-text">
-              <span className="sidebar__title">ResumeScreener</span>
-              <span className="sidebar__version">v1.0</span>
+            <div className="app-header__text">
+              <h1 className="app-header__title">Resume Parser</h1>
+              <span className="app-header__tagline">Upload · Parse · View</span>
             </div>
           </div>
-
-          <nav className="sidebar__nav">
-            <NavLink
-              to="/upload"
-              className={({ isActive }) =>
-                `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
-              }
-              id="nav-upload"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              Upload Resumes
-            </NavLink>
-            <NavLink
-              to="/jobs"
-              className={({ isActive }) =>
-                `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
-              }
-              id="nav-jobs"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-              </svg>
-              Job Description
-            </NavLink>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
-              }
-              id="nav-dashboard"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-              </svg>
-              Dashboard
-            </NavLink>
-          </nav>
-
-          <div className="sidebar__footer">
-            <span className="sidebar__footer-text">FR-1 · FR-2 · FR-3</span>
-          </div>
-        </aside>
+        </header>
 
         {/* Main Content */}
         <main className="main-content" id="main-content">
-          <Routes>
-            <Route path="/" element={<Navigate to="/upload" replace />} />
-            <Route path="/upload" element={<UploadResumes />} />
-            <Route path="/jobs" element={<JobDescription />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
+          {!parsedResume ? (
+            <div className="page">
+              <div className="page__header">
+                <h2 className="page__title">Upload Resume</h2>
+                <p className="page__subtitle">
+                  Upload a PDF resume to extract and display its content
+                </p>
+              </div>
+              <ResumeUpload onParsed={handleParsed} />
+            </div>
+          ) : (
+            <div className="page">
+              <div className="page__header">
+                <h2 className="page__title">Parsed Resume</h2>
+                <p className="page__subtitle">
+                  Extracted content from your uploaded resume
+                </p>
+              </div>
+              <ResumeViewer data={parsedResume} onReset={handleReset} />
+            </div>
+          )}
         </main>
+
+        {/* Footer */}
+        <footer className="app-footer">
+          <span className="app-footer__text">Resume Parser · PDF to Text</span>
+        </footer>
       </div>
-    </Router>
+    </div>
   );
 }
 
