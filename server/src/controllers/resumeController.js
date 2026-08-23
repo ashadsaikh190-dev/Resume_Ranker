@@ -39,7 +39,7 @@ const uploadResume = async (req, res, next) => {
       } finally {
         // Clean up — delete the uploaded file after parsing
         fs.unlink(file.path, (err) => {
-          if (err) console.warn('⚠️  Could not delete temp file:', file.path);
+          if (err) console.warn(' Could not delete temp file:', file.path);
         });
       }
     }
@@ -61,7 +61,7 @@ const uploadResume = async (req, res, next) => {
     // Clean up on unexpected error
     if (req.files) {
       req.files.forEach((file) => {
-        fs.unlink(file.path, () => {});
+        fs.unlink(file.path, () => { });
       });
     }
     next(error);
