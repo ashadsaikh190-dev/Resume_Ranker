@@ -14,7 +14,7 @@ const errorMiddleware = (err, _req, res, _next) => {
   if (err.code === 'LIMIT_FILE_COUNT') {
     return res.status(400).json({
       success: false,
-      message: 'Too many files. Maximum is 100 files per upload.',
+      message: 'Too many files. Maximum is 10 files per upload.',
     });
   }
 
