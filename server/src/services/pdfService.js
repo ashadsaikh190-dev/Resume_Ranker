@@ -18,7 +18,7 @@ const extractTextFromPDF = async (filePath) => {
     const text = (data.text || '').trim();
 
     if (!text) {
-      console.warn(`⚠️  No readable text found in: ${filePath}`);
+      console.warn(`  No readable text found in: ${filePath}`);
     }
 
     return {

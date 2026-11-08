@@ -1,12 +1,5 @@
 import api from './api';
 
-/**
- * Upload multiple resume PDF files and get parsed text back.
- *
- * @param {File[]} files - Array of PDF File objects to upload.
- * @param {function} onProgress - Callback receiving progress percentage (0–100).
- * @returns {Promise} Axios response with parsed resume data.
- */
 export const uploadResumes = (files, onProgress) => {
   const formData = new FormData();
   files.forEach((file) => {
@@ -19,11 +12,11 @@ export const uploadResumes = (files, onProgress) => {
     },
     onUploadProgress: (progressEvent) => {
       if (onProgress && progressEvent.total) {
-        const percent = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
+        const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
         onProgress(percent);
       }
     },
   });
 };
+
+export const getDashboardStats = () => api.get('/match/stats');

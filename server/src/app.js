@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
 const resumeRoutes = require('./routes/resumeRoutes');
+const jobRoutes = require('./routes/jobRoutes');
+const matchRoutes = require('./routes/matchRoutes');
 const errorMiddleware = require('./middleware/errorMiddleware');
 const app = express();
 const uploadsDir = path.join(__dirname, '../uploads');
@@ -13,7 +15,6 @@ if (!fs.existsSync(uploadsDir)) {
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (e.g. curl, Postman) or any localhost
       if (!origin || /^https?:\/\/localhost(:\d+)?$/.test(origin)) {
         callback(null, true);
       } else {
@@ -27,6 +28,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use('/api/resumes', resumeRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/match', matchRoutes);
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'Server is running' });
 });

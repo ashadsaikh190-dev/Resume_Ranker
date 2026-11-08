@@ -7,4 +7,7 @@ const api = axios.create({
   },
 });
 
+export const apiGet = (url, config) => api.get(url, config);
+export const apiPost = (url, data, config) => api.post(url, data, config);
+
 export default api;
