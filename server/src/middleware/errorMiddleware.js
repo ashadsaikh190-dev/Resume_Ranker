@@ -26,7 +26,7 @@ const errorMiddleware = (err, _req, res, _next) => {
   }
 
   // Multer file-filter rejection (our custom message)
-  if (err.message === 'Only PDF files are allowed.') {
+  if (err.message === 'Only PDF, .doc, and .docx files are allowed.') {
     return res.status(400).json({
       success: false,
       message: err.message,

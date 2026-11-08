@@ -25,11 +25,15 @@ const ResumeUpload = ({ onParsed }) => {
   };
 
   const validateFile = (incoming) => {
-    const ext = incoming.name.split('.').pop().toLowerCase();
-    if (incoming.type === 'application/pdf' && ext === 'pdf') {
-      return true;
-    }
-    return false;
+    const extension = incoming.name.split('.').pop().toLowerCase();
+    return (
+      (extension === 'pdf' && incoming.type === 'application/pdf') ||
+      (extension === 'doc' && incoming.type === 'application/msword') ||
+      (
+        extension === 'docx' &&
+        incoming.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      )
+    );
   };
 
   const addFiles = (incomingFiles) => {
@@ -39,7 +43,7 @@ const ResumeUpload = ({ onParsed }) => {
     const rejected = fileList.length - valid.length;
 
     if (rejected > 0) {
-      setMessage(`${rejected} file(s) rejected — only PDF files are allowed.`);
+      setMessage(`${rejected} file(s) rejected — only PDF, .doc, and .docx files are allowed.`);
       setMessageType('warning');
     }
 
@@ -110,7 +114,7 @@ const ResumeUpload = ({ onParsed }) => {
 
   const handleUpload = async () => {
     if (files.length === 0) {
-      setMessage('Please select at least one PDF resume.');
+      setMessage('Please select at least one PDF or Word resume.');
       setMessageType('error');
       return;
     }
@@ -177,7 +181,7 @@ const ResumeUpload = ({ onParsed }) => {
               </svg>
             </div>
             <p className="drop-zone__title">
-              Drag &amp; Drop PDF files here
+              Drag &amp; Drop PDF or Word files here
             </p>
             <p className="drop-zone__subtitle">OR</p>
             <button
@@ -191,7 +195,7 @@ const ResumeUpload = ({ onParsed }) => {
             >
               Choose Files
             </button>
-            <p className="drop-zone__hint">Only .pdf files are accepted · Max 10 MB each · Up to {MAX_FILES} files</p>
+            <p className="drop-zone__hint">PDF, .doc, and .docx files · Max 10 MB each · Up to {MAX_FILES} files</p>
           </>
         ) : (
           <div className="selected-files">
@@ -277,7 +281,7 @@ const ResumeUpload = ({ onParsed }) => {
           type="file"
           ref={fileInputRef}
           className="drop-zone__input"
-          accept=".pdf,application/pdf"
+          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           onChange={handleInputChange}
           multiple
           id="file-input"

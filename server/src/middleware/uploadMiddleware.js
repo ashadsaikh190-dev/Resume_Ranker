@@ -13,16 +13,21 @@ const storage = multer.diskStorage({
   },
 });
 
-// File filter — only accept PDF files (validate both MIME type and extension)
+// File filter — accept supported document extensions and their known MIME types.
 const fileFilter = (_req, file, cb) => {
-  const isPdfMime = file.mimetype === 'application/pdf';
-  const isPdfExt =
-    path.extname(file.originalname).toLowerCase() === '.pdf';
+  const extension = path.extname(file.originalname).toLowerCase();
+  const isPdf = extension === '.pdf' && file.mimetype === 'application/pdf';
+  const isDoc =
+    extension === '.doc' &&
+    ['application/msword', 'application/vnd.ms-word.document'].includes(file.mimetype);
+  const isDocx =
+    extension === '.docx' &&
+    file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
-  if (isPdfMime && isPdfExt) {
+  if (isPdf || isDoc || isDocx) {
     cb(null, true);
   } else {
-    cb(new Error('Only PDF files are allowed.'), false);
+    cb(new Error('Only PDF, .doc, and .docx files are allowed.'), false);
   }
 };
 

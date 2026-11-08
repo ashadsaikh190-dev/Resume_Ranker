@@ -93,14 +93,18 @@ const ResumeViewer = ({ resumes, onReset }) => {
                     </svg>
                     {formatFileSize(current.fileSize)}
                   </span>
-                  <span className="viewer__meta-divider">·</span>
-                  <span className="viewer__meta-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="3" width="20" height="18" rx="2" />
-                      <line x1="2" y1="9" x2="22" y2="9" />
-                    </svg>
-                    {current.pages} {current.pages === 1 ? 'page' : 'pages'}
-                  </span>
+                  {current.pages != null && (
+                    <>
+                      <span className="viewer__meta-divider">·</span>
+                      <span className="viewer__meta-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="3" width="20" height="18" rx="2" />
+                          <line x1="2" y1="9" x2="22" y2="9" />
+                        </svg>
+                        {current.pages} {current.pages === 1 ? 'page' : 'pages'}
+                      </span>
+                    </>
+                  )}
                   {successfulResumes.length > 1 && (
                     <>
                       <span className="viewer__meta-divider">·</span>
@@ -137,8 +141,8 @@ const ResumeViewer = ({ resumes, onReset }) => {
                   <line x1="12" y1="8" x2="12" y2="12" />
                   <line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
-                <p>No readable text was found in this PDF.</p>
-                <p className="viewer__empty-hint">The PDF might be image-based or contain only non-text elements.</p>
+                <p>No readable text was found in this resume.</p>
+                <p className="viewer__empty-hint">The file might be image-based or contain only non-text elements.</p>
               </div>
             )}
           </div>

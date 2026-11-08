@@ -1,8 +1,8 @@
 const fs = require('fs');
-const { extractTextFromPDF } = require('../services/pdfService');
+const { extractTextFromResume } = require('../services/pdfService');
 
 /**
- * @desc   Upload multiple PDF resumes, extract text from each, return parsed content
+ * @desc   Upload multiple supported resumes, extract text from each, return parsed content
  * @route  POST /api/resumes/upload
  */
 const uploadResume = async (req, res, next) => {
@@ -11,7 +11,7 @@ const uploadResume = async (req, res, next) => {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'No files selected. Please upload at least one PDF resume.',
+        message: 'No files selected. Please upload at least one PDF or Word resume.',
       });
     }
 
@@ -20,7 +20,7 @@ const uploadResume = async (req, res, next) => {
 
     for (const file of files) {
       try {
-        const result = await extractTextFromPDF(file.path);
+        const result = await extractTextFromResume(file.path);
         results.push({
           fileName: file.originalname,
           fileSize: file.size,
@@ -34,7 +34,7 @@ const uploadResume = async (req, res, next) => {
           fileName: file.originalname,
           fileSize: file.size,
           success: false,
-          error: `Could not parse PDF: ${extractionError.message}`,
+          error: `Could not parse resume: ${extractionError.message}`,
         });
       } finally {
         // Clean up — delete the uploaded file after parsing
