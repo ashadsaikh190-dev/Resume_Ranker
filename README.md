@@ -58,9 +58,9 @@ In a traditional hiring process, recruiters manually read through hundreds of re
 
 | FR   | Feature                  | Description                                                    |
 |------|--------------------------|----------------------------------------------------------------|
-| FR-1 | Resume Upload            | Upload multiple PDF resumes with drag & drop support           |
+| FR-1 | Resume Upload            | Upload multiple PDF and Word resumes with drag & drop support  |
 | FR-2 | Job Description Input    | Enter and save job title + description to MongoDB              |
-| FR-3 | Resume Parsing           | Extract plain text from uploaded PDFs using `pdf-parse`        |
+| FR-3 | Resume Parsing           | Extract text from PDF and Word files; show structured contact, education, and project details |
 | FR-4 | Resume-Job Matching      | Compare resume text against job description, rank by match %   |
 
 ---

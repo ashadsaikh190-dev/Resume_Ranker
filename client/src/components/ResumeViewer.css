@@ -215,6 +215,46 @@
   padding: 10px 16px;
 }
 
+/* ===== Structured Profile ===== */
+.viewer__profile {
+  padding: 22px 28px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-bottom: none;
+}
+
+.viewer__profile > h3 {
+  margin: 0 0 16px;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.viewer__profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.viewer__profile-grid h4 {
+  margin: 0 0 10px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.viewer__profile-grid p,
+.viewer__profile-grid li {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.viewer__profile-grid ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
 /* ===== Content Area ===== */
 .viewer__content {
   background: var(--bg-glass);
@@ -303,6 +343,10 @@
 
   .viewer__content-label {
     padding: 12px 20px;
+  }
+
+  .viewer__profile {
+    padding: 18px 20px;
   }
 
   .viewer__text {

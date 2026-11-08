@@ -118,6 +118,37 @@ const ResumeViewer = ({ resumes, onReset }) => {
             </div>
           </div>
 
+          <section className="viewer__profile" aria-label="Extracted resume profile">
+            <h3>Extracted profile</h3>
+            <div className="viewer__profile-grid">
+              <section>
+                <h4>Personal information</h4>
+                {current.structuredData?.personalInformation?.email && <p><strong>Email:</strong> {current.structuredData.personalInformation.email}</p>}
+                {current.structuredData?.personalInformation?.phone && <p><strong>Phone:</strong> {current.structuredData.personalInformation.phone}</p>}
+                {current.structuredData?.personalInformation?.location && <p><strong>Location:</strong> {current.structuredData.personalInformation.location}</p>}
+                {current.structuredData?.personalInformation?.place && <p><strong>Place:</strong> {current.structuredData.personalInformation.place}</p>}
+                {!current.structuredData?.personalInformation?.email &&
+                  !current.structuredData?.personalInformation?.phone &&
+                  !current.structuredData?.personalInformation?.location &&
+                  !current.structuredData?.personalInformation?.place && <p>No personal details detected.</p>}
+              </section>
+              <section>
+                <h4>Education</h4>
+                {current.structuredData?.education?.length ? (
+                  <ul>{current.structuredData.education.map((item) => (
+                    <li key={item.key}><strong>{item.label}:</strong> {item.value}</li>
+                  ))}</ul>
+                ) : <p>No education details detected.</p>}
+              </section>
+              <section>
+                <h4>Projects</h4>
+                {current.structuredData?.projects?.length ? (
+                  <ul>{current.structuredData.projects.map((project, index) => <li key={`${project}-${index}`}>{project}</li>)}</ul>
+                ) : <p>No projects detected.</p>}
+              </section>
+            </div>
+          </section>
+
           {/* Extracted Text */}
           <div className="viewer__content">
             <div className="viewer__content-label">

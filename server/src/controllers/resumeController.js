@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { extractTextFromResume } = require('../services/pdfService');
+const { extractResumeDetails } = require('../services/resumeDetailsService');
 
 /**
  * @desc   Upload multiple supported resumes, extract text from each, return parsed content
@@ -26,6 +27,7 @@ const uploadResume = async (req, res, next) => {
           fileSize: file.size,
           pages: result.pages,
           text: result.text,
+          structuredData: extractResumeDetails(result.text),
           pdfInfo: result.info,
           success: true,
         });
