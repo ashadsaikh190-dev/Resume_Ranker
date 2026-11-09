@@ -37,3 +37,41 @@ Projects
   assert.equal(details.education.length, 6);
   assert.deepEqual(details.projects, ['Resume Ranker', 'E-commerce Website']);
 });
+
+test('recognizes Academia and graduate education without an Education heading', () => {
+  const details = extractResumeDetails(
+    'Career Scan Worked as test analyst. Academia Graduate in Electronic and communication Engineering from Bhabha Group, Kanpur(Uttar Padesh) In 2015. Skill Set Java'
+  );
+
+  assert.equal(details.education.length, 1);
+  assert.equal(details.education[0].label, 'Graduate');
+  assert.match(details.education[0].value, /Electronic and communication Engineering.*Bhabha Group.*2015/);
+});
+
+test('keeps postal address compact and excludes following objective text', () => {
+  const details = extractResumeDetails(
+    'Postal Address: L-196/b, semra railway colony badgaon, gonda (Uttar Pradesh) I am looking forward to work in an organization, which provides the environment for growth with competent skills. Academics: B.Sc XYZ University 2020'
+  );
+
+  assert.match(details.personalInformation.location, /Uttar Pradesh/);
+  assert.doesNotMatch(details.personalInformation.location, /looking forward|environment for growth/i);
+});
+
+test('extracts a qualification table with tab-separated degree, college, and year', () => {
+  const details = extractResumeDetails(
+    'QUALIFICATIONS\tDEGREE\tCOLLEGE / UNIVERSITY\tYEAR OF PASSING\tBachelor of Technology (B.Tech) in Computer Science\tJNTU XYZ\t2010\tCAREER PROFILE\tABC Services'
+  );
+
+  assert.equal(details.education.length, 1);
+  assert.equal(details.education[0].label, 'Bachelor of Technology (B.Tech)');
+  assert.match(details.education[0].value, /JNTU XYZ.*2010/);
+});
+
+test('does not include training details in education or project summaries', () => {
+  const details = extractResumeDetails(
+    'Academia MCA from ABC with 65% marks HSC from ABC with 71% marks SSC from ABC with 70% marks Trainings attended Six months Industrial Training in Software Testing in ABC, XYZ.'
+  );
+
+  assert.equal(details.education.length, 3);
+  assert.ok(details.education.every((item) => !/training/i.test(item.label + item.value)));
+});
